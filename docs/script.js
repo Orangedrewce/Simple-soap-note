@@ -178,7 +178,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const soapNote = `
 WILDERNESS SOAP NOTE
 ====================
-
 SUBJECTIVE:
 -----------
 Rescuer: ${getValue('rescuerName')}
@@ -202,7 +201,6 @@ Position Found: ${getValue('foundPosition')}
 Pertinent Negatives: ${getValue('pertinentNegatives')}
 
 Vital Signs Details:${vitalsDetails}
-
 Overall Vitals Trend: ${vitalsStatus}
 
 SAMPLE History:
