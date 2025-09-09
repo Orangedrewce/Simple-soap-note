@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Wilderness SOAP Note</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>S.O.A.P. Note Form</title> <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>SOAP Note</h1>
+            <h1>S.O.A.P Note</h1>
             <p>Offline Patient Assessment Documentation</p>
             <div class="progress-bar">
                 <div class="progress-fill" id="progressFill"></div>
@@ -19,19 +18,18 @@
         <div class="content">
             <div class="section subjective" style="animation-delay: 0.1s">
                 <h2>
-                    <span class="section-icon">S</span>
-                    ubjective
+                Subjective
                 </h2>
 
                 <div class="subsection">
                     <h3>Introduction & Patient Information</h3>
                     <div class="field-group">
-                        <label for="rescuerName">Your name and location:</label>
-                        <input type="text" id="rescuerName" placeholder="e.g., Jane Doe at Millcreek Canyon">
+                        <label for="rescuerName">Name and location:</label>
+                        <input type="text" id="rescuerName" placeholder=" Jane Doe at Millcreek Canyon">
                     </div>
                     <div class="field-group">
                         <label for="patientInfo">Patient's age, gender, and chief complaint:</label>
-                        <input type="text" id="patientInfo" placeholder="e.g., 25-year-old male with ankle injury">
+                        <input type="text" id="patientInfo" placeholder=" xx-year-old male/female with ankle injury">
                     </div>
                 </div>
 
@@ -55,7 +53,7 @@
                     </div>
                     <div class="field-group">
                         <label for="severity">Severity - Rate 1-10 or describe intensity:</label>
-                        <input type="text" id="severity" placeholder="e.g., 7/10 or moderate">
+                        <input type="text" id="severity" placeholder=" 7/10 or moderate">
                     </div>
                     <div class="field-group">
                         <label for="time">Time - Duration and progression:</label>
@@ -66,7 +64,7 @@
                 <div class="subsection">
                     <h3>Mechanism of Injury / History of Present Illness</h3>
                     <div class="field-group">
-                        <label for="moiHpi">Describe what happened:</label>
+                        <label for="moiHpi" class="visually-hidden">Mechanism of Injury / History of Present Illness</label>
                         <textarea id="moiHpi" placeholder="Detailed description of the incident or illness onset..."></textarea>
                     </div>
                 </div>
@@ -74,7 +72,7 @@
                 <div class="subsection">
                     <h3>Level of Responsiveness</h3>
                     <div class="field-group">
-                        <label for="lor">Current LOR (AVPU):</label>
+                        <label for="lor" class="visually-hidden">Level of Responsiveness</label>
                         <select id="lor">
                             <option value="">Select LOR...</option>
                             <option value="Alert">Alert</option>
@@ -88,8 +86,7 @@
 
             <div class="section objective" style="animation-delay: 0.2s">
                 <h2>
-                    <span class="section-icon">O</span>
-                    bjective
+                Objective
                 </h2>
 
                 <div class="subsection">
@@ -100,37 +97,42 @@
                     </div>
                     <div class="field-group">
                         <label for="foundPosition">Position patient was found in:</label>
-                        <input type="text" id="foundPosition" placeholder="e.g., supine, prone, sitting against tree">
+                        <input type="text" id="foundPosition" placeholder=" supine, prone, sitting against tree">
                     </div>
                     <div class="field-group">
                         <label for="pertinentNegatives">Pertinent negatives:</label>
-                        <textarea id="pertinentNegatives" placeholder="e.g., no loss of consciousness, no spine pain, normal CSMs..."></textarea>
+                        <textarea id="pertinentNegatives" placeholder="no loss of consciousness, no spine pain, normal CSMs..."></textarea>
                     </div>
                 </div>
 
                 <div class="subsection">
                     <h3>Vital Signs</h3>
-                    
                     <div id="vitals-sets-container"></div>
-                    
                     <button id="addVitalsBtn" class="action-btn copy-btn" style="background: linear-gradient(135deg, #3498db, #2980b9); margin-bottom: 20px;">
-                        Add Vitals Set ➕
-                    </button>
+                        Add Vitals Set ➕ </button>
 
                     <div class="field-group" style="padding-top: 20px; border-top: 2px solid #e9ecef;">
                         <label>Overall vital signs trend:</label>
                         <div class="vitals-status-group">
                             <label class="radio-label">
-                                <input type="radio" name="vitalsStatus" value="stable"> Stable
+                                <input type="radio" name="vitalsStatus" value="stable">
+                                <span class="custom-radio"></span>
+                                Stable
                             </label>
                             <label class="radio-label">
-                                <input type="radio" name="vitalsStatus" value="unstable"> Unstable
+                                <input type="radio" name="vitalsStatus" value="unstable">
+                                <span class="custom-radio"></span>
+                                Unstable
                             </label>
                              <label class="radio-label">
-                                <input type="radio" name="vitalsStatus" value="improving"> Improving
+                                <input type="radio" name="vitalsStatus" value="improving">
+                                <span class="custom-radio"></span>
+                                Improving
                             </label>
                              <label class="radio-label">
-                                <input type="radio" name="vitalsStatus" value="declining"> Declining
+                                <input type="radio" name="vitalsStatus" value="declining">
+                                <span class="custom-radio"></span>
+                                Declining
                             </label>
                         </div>
                     </div>
@@ -167,22 +169,19 @@
 
             <div class="section assessment" style="animation-delay: 0.3s">
                 <h2>
-                    <span class="section-icon">A</span>
-                    ssessment
+                Assessment
                 </h2>
-
                 <div class="subsection">
                     <h3>Problem List</h3>
                     <div class="field-group">
-                        <label for="problemList">List possible problems or diagnoses:</label>
+                        <label for="problemList" class="visually-hidden">Problem List</label>
                         <textarea id="problemList" placeholder="List all identified and suspected problems..."></textarea>
                     </div>
                 </div>
-
                 <div class="subsection">
                     <h3>Spine Injury Assessment</h3>
                     <div class="field-group">
-                        <label for="spineAssessment">Based on MOI, is there possible spine injury?</label>
+                        <label for="spineAssessment" class="visually-hidden">Spine Injury Assessment</label>
                         <textarea id="spineAssessment" placeholder="Assess spine injury risk based on mechanism of injury..."></textarea>
                     </div>
                 </div>
@@ -190,38 +189,33 @@
 
             <div class="section plan" style="animation-delay: 0.4s">
                 <h2>
-                    <span class="section-icon">P</span>
-                    lan
+                Plan
                 </h2>
-
                 <div class="subsection">
                     <h3>Treatment Plan</h3>
                     <div class="field-group">
-                        <label for="treatments">Describe treatment for each problem:</label>
+                        <label for="treatments" class="visually-hidden">Treatment Plan</label>
                         <textarea id="treatments" placeholder="Include FSA or spinal immobilization as needed..."></textarea>
                     </div>
                 </div>
-
                 <div class="subsection">
                     <h3>Evacuation Plan</h3>
                     <div class="field-group">
-                        <label for="evacuation">Detail the evacuation plan:</label>
+                        <label for="evacuation" class="visually-hidden">Evacuation Plan</label>
                         <textarea id="evacuation" placeholder="Method, urgency, destination..."></textarea>
                     </div>
                 </div>
-
                 <div class="subsection">
                     <h3>Support Requested</h3>
                     <div class="field-group">
-                        <label for="support">What support is requested?</label>
+                        <label for="support" class="visually-hidden">Support Requested</label>
                         <textarea id="support" placeholder="Additional resources, personnel, equipment needed..."></textarea>
                     </div>
                 </div>
-
                 <div class="subsection">
                     <h3>Anticipated Problems</h3>
                     <div class="field-group">
-                        <label for="anticipatedProblems">Anticipated problems during treatment or evacuation:</label>
+                        <label for="anticipatedProblems" class="visually-hidden">Anticipated Problems</label>
                         <textarea id="anticipatedProblems" placeholder="Potential complications or challenges..."></textarea>
                     </div>
                 </div>
@@ -232,14 +226,14 @@
             </button>
 
             <div id="soapOutput" class="soap-output hidden"></div>
-            
+
             <div id="outputActions" class="output-actions hidden">
                  <button id="copyButton" class="action-btn copy-btn">Copy Report 📋</button>
                  <button id="clearButton" class="action-btn clear-btn">Clear Form 🗑️</button>
             </div>
         </div>
     </div>
-    
+
     <div id="clearModal" class="modal">
         <div class="modal-content">
             <h2>Confirm Clear</h2>
