@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Wilderness SOAP Note</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+            margin-top: 20px;
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #45a049);
+            border-radius: 3px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid transparent;
+            transition: all 0.3s ease;
+            transform: translateY(10px);
+            opacity: 0;
+            animation: slideIn 0.6s ease forwards;
+        }
+
+        .section.subjective { border-left-color: #e74c3c; }
+        .section.objective { border-left-color: #3498db; }
+        .section.assessment { border-left-color: #f39c12; }
+        .section.plan { border-left-color: #27ae60; }
+
+        .section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        @keyframes slideIn {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            font-size: 1.2em;
+        }
+
+        .subjective .section-icon { background: #e74c3c; }
+        .objective .section-icon { background: #3498db; }
+        .assessment .section-icon { background: #f39c12; }
+        .plan .section-icon { background: #27ae60; }
+
+        .subsection {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+
+        .subsection h3 {
+            color: #34495e;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .field-group {
+            margin-bottom: 20px;
+        }
+
+        .field-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+            font-size: 0.95em;
+        }
+
+        .field-group textarea,
+        .field-group input,
+        .field-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .field-group select {
+            -webkit-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2334495e' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
+            padding-right: 2.5rem; /* Make room for arrow */
+        }
+
+        .field-group textarea:focus,
+        .field-group input:focus,
+        .field-group select:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+            transform: scale(1.02);
+        }
+
+        .field-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .vitals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .vitals-status-group {
+            display: flex;
+            flex-wrap: wrap; /* Allows items to wrap onto the next line */
+            gap: 10px 20px; /* Vertical and horizontal gap */
+            margin-top: 10px;
+        }
+
+        .radio-label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .vital-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+        }
+
+        .vital-item label {
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .vital-item input {
+            width: 100%;
+            padding: 8px;
+            margin: 0;
+        }
+
+        .generate-btn {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 30px;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+
+        .soap-output {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 30px;
+            border-radius: 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.8;
+            margin-top: 30px;
+            white-space: pre-wrap;
+            box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.2);
+            border: 2px solid #34495e;
+        }
+
+        .output-actions {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+            justify-content: flex-end;
+        }
+
+        .action-btn {
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .action-btn:hover {
+             transform: translateY(-2px);
+             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .copy-btn {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+        }
+
+        .clear-btn {
+            background: linear-gradient(135deg, #c0392b, #e74c3c);
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.6);
+            animation: fadeIn 0.3s;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 25px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            text-align: center;
+            animation: slideDown 0.4s;
+        }
+        
+        @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
+        @keyframes slideDown { from {transform: translateY(-50px);} to {transform: translateY(0);} }
+
+        .modal-content h2 { margin-bottom: 15px; color: #333; }
+        .modal-content p { margin-bottom: 25px; color: #666; }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .modal-btn {
+            padding: 10px 25px;
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        #confirmClearBtn { background-color: #e74c3c; color: white; }
+        #confirmClearBtn:hover { background-color: #c0392b; }
+        #cancelClearBtn { background-color: #bdc3c7; color: #333; }
+        #cancelClearBtn:hover { background-color: #95a5a6; }
+
+
+        .hidden {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .vitals-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏔️ Wilderness SOAP Note</h1>
+            <p>Interactive Patient Assessment Documentation</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- SUBJECTIVE SECTION -->
+            <div class="section subjective" style="animation-delay: 0.1s">
+                <h2>
+                    <span class="section-icon">S</span>
+                    Subjective
+                </h2>
+
+                <div class="subsection">
+                    <h3>📋 Introduction & Patient Information</h3>
+                    <div class="field-group">
+                        <label for="rescuerName">Your name and location:</label>
+                        <input type="text" id="rescuerName" placeholder="e.g., Jane Doe at Millcreek Canyon">
+                    </div>
+                    <div class="field-group">
+                        <label for="patientInfo">Patient's age, gender, and chief complaint:</label>
+                        <input type="text" id="patientInfo" placeholder="e.g., 25-year-old male with ankle injury">
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>🎯 OPQRST Assessment</h3>
+                    <div class="field-group">
+                        <label for="onset">Onset - When did this start?</label>
+                        <textarea id="onset" placeholder="Describe when the problem began..."></textarea>
+                    </div>
+                    <div class="field-group">
+                        <label for="provocation">Provocation/Palliation - What makes it better or worse?</label>
+                        <textarea id="provocation" placeholder="What triggers or relieves the symptoms..."></textarea>
+                    </div>
+                    <div class="field-group">
+                        <label for="quality">Quality - What does it feel like?</label>
+                        <textarea id="quality" placeholder="Sharp, dull, throbbing, burning, etc..."></textarea>
+                    </div>
+                    <div class="field-group">
+                        <label for="radiation">Radiation/Region - Where is it? Does it spread?</label>
+                        <textarea id="radiation" placeholder="Location and any radiation of symptoms..."></textarea>
+                    </div>
+                    <div class="field-group">
+                        <label for="severity">Severity - Rate 1-10 or describe intensity:</label>
+                        <input type="text" id="severity" placeholder="e.g., 7/10 or moderate">
+                    </div>
+                    <div class="field-group">
+                        <label for="time">Time - Duration and progression:</label>
+                        <textarea id="time" placeholder="How long, getting better/worse..."></textarea>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>⚡ Mechanism of Injury / History of Present Illness</h3>
+                    <div class="field-group">
+                        <label for="moiHpi">Describe what happened:</label>
+                        <textarea id="moiHpi" placeholder="Detailed description of the incident or illness onset..."></textarea>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>🧠 Level of Responsiveness</h3>
+                    <div class="field-group">
+                        <label for="lor">Current LOR (AVPU):</label>
+                        <select id="lor">
+                            <option value="">Select LOR...</option>
+                            <option value="Alert">Alert</option>
+                            <option value="Verbal">Verbal</option>
+                            <option value="Painful">Painful</option>
+                            <option value="Unresponsive">Unresponsive</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- OBJECTIVE SECTION -->
+            <div class="section objective" style="animation-delay: 0.2s">
+                <h2>
+                    <span class="section-icon">O</span>
+                    Objective
+                </h2>
+
+                <div class="subsection">
+                    <h3>🔍 Physical Examination Findings</h3>
+                    <div class="field-group">
+                        <label for="headToToe">Significant head-to-toe findings:</label>
+                        <textarea id="headToToe" placeholder="Document significant physical findings from your examination..."></textarea>
+                    </div>
+                    <div class="field-group">
+                        <label for="foundPosition">Position patient was found in:</label>
+                        <input type="text" id="foundPosition" placeholder="e.g., supine, prone, sitting against tree">
+                    </div>
+                    <div class="field-group">
+                        <label for="pertinentNegatives">Pertinent negatives:</label>
+                        <textarea id="pertinentNegatives" placeholder="e.g., no loss of consciousness, no spine pain, normal CSMs..."></textarea>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>📊 Vital Signs</h3>
+                    <div class="field-group">
+                        <label>Vital signs status:</label>
+                        <div class="vitals-status-group">
+                            <label class="radio-label">
+                                <input type="radio" name="vitalsStatus" value="stable"> Stable
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="vitalsStatus" value="unstable"> Unstable
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="vitals-grid">
+                        <div class="vital-item">
+                            <label for="heartRate">Heart Rate:</label>
+                            <input type="text" id="heartRate" placeholder="e.g., 80 strong">
+                        </div>
+                        <div class="vital-item">
+                            <label for="respRate">Respiratory Rate:</label>
+                            <input type="text" id="respRate" placeholder="e.g., 16 normal">
+                        </div>
+                        <div class="vital-item">
+                            <label for="sctm">SCTM:</label>
+                            <input type="text" id="sctm" placeholder="e.g., Pink, warm, dry">
+                        </div>
+                        <div class="vital-item">
+                            <label for="perrl">PERRL:</label>
+                            <input type="text" id="perrl" placeholder="e.g., 3mm reactive">
+                        </div>
+                        <div class="vital-item">
+                            <label for="temperature">Temperature:</label>
+                            <input type="text" id="temperature" placeholder="e.g., Normal to touch">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>📋 SAMPLE History</h3>
+                    <div class="field-group">
+                        <label for="symptoms">Signs/Symptoms:</label>
+                        <textarea id="symptoms" placeholder="Current signs and symptoms..."></textarea>
+                    </div>
+                    <div class="field-group">
+                        <label for="allergies">Allergies:</label>
+                        <input type="text" id="allergies" placeholder="Known allergies or NKDA">
+                    </div>
+                    <div class="field-group">
+                        <label for="medications">Medications:</label>
+                        <textarea id="medications" placeholder="Current medications..."></textarea>
+                    </div>
+                    <div class="field-group">
+                        <label for="pertinentHistory">Pertinent medical history:</label>
+                        <textarea id="pertinentHistory" placeholder="Relevant past medical history..."></textarea>
+                    </div>
+                    <div class="field-group">
+                        <label for="lastInsOuts">Last ins/outs:</label>
+                        <input type="text" id="lastInsOuts" placeholder="Last meal, fluids, urination">
+                    </div>
+                    <div class="field-group">
+                        <label for="events">Events leading up to incident:</label>
+                        <textarea id="events" placeholder="What was happening before the incident..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ASSESSMENT SECTION -->
+            <div class="section assessment" style="animation-delay: 0.3s">
+                <h2>
+                    <span class="section-icon">A</span>
+                    Assessment
+                </h2>
+
+                <div class="subsection">
+                    <h3>🎯 Problem List</h3>
+                    <div class="field-group">
+                        <label for="problemList">List possible problems or diagnoses:</label>
+                        <textarea id="problemList" placeholder="List all identified and suspected problems..."></textarea>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>🦴 Spine Injury Assessment</h3>
+                    <div class="field-group">
+                        <label for="spineAssessment">Based on MOI, is there possible spine injury?</label>
+                        <textarea id="spineAssessment" placeholder="Assess spine injury risk based on mechanism of injury..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PLAN SECTION -->
+            <div class="section plan" style="animation-delay: 0.4s">
+                <h2>
+                    <span class="section-icon">P</span>
+                    Plan
+                </h2>
+
+                <div class="subsection">
+                    <h3>🩹 Treatment Plan</h3>
+                    <div class="field-group">
+                        <label for="treatments">Describe treatment for each problem:</label>
+                        <textarea id="treatments" placeholder="Include FSA or spinal immobilization as needed..."></textarea>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>🚁 Evacuation Plan</h3>
+                    <div class="field-group">
+                        <label for="evacuation">Detail the evacuation plan:</label>
+                        <textarea id="evacuation" placeholder="Method, urgency, destination..."></textarea>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>🤝 Support Requested</h3>
+                    <div class="field-group">
+                        <label for="support">What support is requested?</label>
+                        <textarea id="support" placeholder="Additional resources, personnel, equipment needed..."></textarea>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>⚠️ Anticipated Problems</h3>
+                    <div class="field-group">
+                        <label for="anticipatedProblems">Anticipated problems during treatment or evacuation:</label>
+                        <textarea id="anticipatedProblems" placeholder="Potential complications or challenges..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <button class="generate-btn" onclick="generateSOAP()">
+                Generate SOAP Note 📄
+            </button>
+
+            <div id="soapOutput" class="soap-output hidden"></div>
+            
+            <div id="outputActions" class="output-actions hidden">
+                 <button id="copyButton" class="action-btn copy-btn">Copy Report 📋</button>
+                 <button id="clearButton" class="action-btn clear-btn">Clear Form 🗑️</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Confirmation Modal -->
+    <div id="clearModal" class="modal">
+        <div class="modal-content">
+            <h2>Confirm Clear</h2>
+            <p>Are you sure you want to clear all entries? This cannot be undone.</p>
+            <div class="modal-buttons">
+                <button id="cancelClearBtn" class="modal-btn">Cancel</button>
+                <button id="confirmClearBtn" class="modal-btn">Yes, Clear</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const clearModal = document.getElementById('clearModal');
+        const confirmClearBtn = document.getElementById('confirmClearBtn');
+        const cancelClearBtn = document.getElementById('cancelClearBtn');
+
+        // Progress tracking
+        function updateProgress() {
+            const inputs = document.querySelectorAll('input[type="text"], input[type="radio"]:checked, textarea, select');
+            const totalFields = document.querySelectorAll('input[type="text"], textarea, select').length + (document.querySelectorAll('input[name="vitalsStatus"]').length > 0 ? 1 : 0);
+            
+            let filled = 0;
+            document.querySelectorAll('input[type="text"], textarea, select').forEach(input => {
+                if (input.value.trim() !== '') filled++;
+            });
+
+            if (document.querySelector('input[name="vitalsStatus"]:checked')) {
+                filled++;
+            }
+
+            const progress = totalFields > 0 ? (filled / totalFields) * 100 : 0;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+
+        // Add event listeners to all inputs
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputs = document.querySelectorAll('input, textarea, select');
+            inputs.forEach(input => {
+                input.addEventListener('input', updateProgress);
+                input.addEventListener('change', updateProgress);
+            });
+            document.getElementById('copyButton').addEventListener('click', copyReport);
+            document.getElementById('clearButton').addEventListener('click', () => {
+                clearModal.style.display = 'block';
+            });
+            
+            // Modal listeners
+            cancelClearBtn.addEventListener('click', () => clearModal.style.display = 'none');
+            confirmClearBtn.addEventListener('click', clearForm);
+            window.addEventListener('click', (event) => {
+                if (event.target == clearModal) {
+                    clearModal.style.display = 'none';
+                }
+            });
+
+            loadAutoSave();
+            updateProgress();
+        });
+
+        function generateSOAP() {
+            const vitalsStatus = document.querySelector('input[name="vitalsStatus"]:checked')?.value || '[Not documented]';
+            let vitalsDetails = '';
+            // Only add vitals details if a status is selected
+            if (vitalsStatus !== '[Not documented]') {
+                vitalsDetails = `
+• Heart Rate: ${document.getElementById('heartRate').value || '[Not documented]'}
+• Respiratory Rate: ${document.getElementById('respRate').value || '[Not documented]'}
+• SCTM: ${document.getElementById('sctm').value || '[Not documented]'}
+• PERRL: ${document.getElementById('perrl').value || '[Not documented]'}
+• Temperature: ${document.getElementById('temperature').value || '[Not documented]'}`;
+            }
+
+            const soapNote = `
+WILDERNESS SOAP NOTE
+====================
+
+SUBJECTIVE:
+-----------
+Rescuer: ${document.getElementById('rescuerName').value || '[Not provided]'}
+Patient: ${document.getElementById('patientInfo').value || '[Not provided]'}
+
+OPQRST Assessment:
+• Onset: ${document.getElementById('onset').value || '[Not documented]'}
+• Provocation/Palliation: ${document.getElementById('provocation').value || '[Not documented]'}
+• Quality: ${document.getElementById('quality').value || '[Not documented]'}
+• Radiation/Region: ${document.getElementById('radiation').value || '[Not documented]'}
+• Severity: ${document.getElementById('severity').value || '[Not documented]'}
+• Time: ${document.getElementById('time').value || '[Not documented]'}
+
+Mechanism of Injury/HPI: ${document.getElementById('moiHpi').value || '[Not documented]'}
+Current Level of Responsiveness: ${document.getElementById('lor').value || '[Not documented]'}
+
+OBJECTIVE:
+----------
+Head-to-Toe Findings: ${document.getElementById('headToToe').value || '[Not documented]'}
+Position Found: ${document.getElementById('foundPosition').value || '[Not documented]'}
+Pertinent Negatives: ${document.getElementById('pertinentNegatives').value || '[Not documented]'}
+
+Vital Signs Status: ${vitalsStatus}
+Vital Signs Details:${vitalsDetails}
+
+SAMPLE History:
+• Signs/Symptoms: ${document.getElementById('symptoms').value || '[Not documented]'}
+• Allergies: ${document.getElementById('allergies').value || '[Not documented]'}
+• Medications: ${document.getElementById('medications').value || '[Not documented]'}
+• Pertinent History: ${document.getElementById('pertinentHistory').value || '[Not documented]'}
+• Last Ins/Outs: ${document.getElementById('lastInsOuts').value || '[Not documented]'}
+• Events: ${document.getElementById('events').value || '[Not documented]'}
+
+ASSESSMENT:
+-----------
+Problem List: ${document.getElementById('problemList').value || '[Not documented]'}
+Spine Injury Assessment: ${document.getElementById('spineAssessment').value || '[Not documented]'}
+
+PLAN:
+-----
+Treatment Plan: ${document.getElementById('treatments').value || '[Not documented]'}
+Evacuation Plan: ${document.getElementById('evacuation').value || '[Not documented]'}
+Support Requested: ${document.getElementById('support').value || '[Not documented]'}
+Anticipated Problems: ${document.getElementById('anticipatedProblems').value || '[Not documented]'}
+
+Generated: ${new Date().toLocaleString()}
+            `;
+
+            const outputDiv = document.getElementById('soapOutput');
+            outputDiv.textContent = soapNote.trim();
+            outputDiv.classList.remove('hidden');
+            document.getElementById('outputActions').classList.remove('hidden');
+            outputDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function copyReport() {
+            const textToCopy = document.getElementById('soapOutput').textContent;
+            const copyButton = document.getElementById('copyButton');
+            
+            const textArea = document.createElement('textarea');
+            textArea.value = textToCopy;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                copyButton.textContent = 'Copied!';
+                setTimeout(() => { copyButton.textContent = 'Copy Report 📋'; }, 2000);
+            } catch (err) {
+                console.error('Failed to copy text: ', err);
+                copyButton.textContent = 'Copy Failed';
+                 setTimeout(() => { copyButton.textContent = 'Copy Report 📋'; }, 2000);
+            }
+            document.body.removeChild(textArea);
+        }
+
+        function clearForm() {
+            // Clear all form fields
+            document.querySelectorAll('input[type="text"], textarea, select').forEach(input => {
+                input.value = '';
+            });
+            document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                radio.checked = false;
+            });
+
+            // Hide the output section and modal
+            document.getElementById('soapOutput').classList.add('hidden');
+            document.getElementById('outputActions').classList.add('hidden');
+            clearModal.style.display = 'none';
+
+
+            // Clear saved data from localStorage
+            localStorage.removeItem('wildernessSoapNote');
+
+            // Update the progress bar to 0 and scroll to top
+            updateProgress();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // Auto-save functionality
+        function autoSave() {
+            const data = {};
+            document.querySelectorAll('input[type="text"], textarea, select').forEach(input => {
+                data[input.id] = input.value;
+            });
+            document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                if(radio.checked) {
+                    data[radio.name] = radio.value;
+                }
+            });
+            localStorage.setItem('wildernessSoapNote', JSON.stringify(data));
+        }
+
+        function loadAutoSave() {
+            const savedData = localStorage.getItem('wildernessSoapNote');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                for (const key in data) {
+                    const element = document.getElementById(key);
+                    if (element) {
+                        element.value = data[key];
+                    } else if (document.querySelector(`input[name="${key}"][value="${data[key]}"]`)) {
+                        document.querySelector(`input[name="${key}"][value="${data[key]}"]`).checked = true;
+                    }
+                }
+            }
+        }
+
+        // Auto-save every 5 seconds
+        setInterval(autoSave, 5000);
+
+    </script>
+</body>
+</html>
+
+
+
