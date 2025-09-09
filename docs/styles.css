@@ -1,3 +1,36 @@
+/* ==========================================================================
+   1. GLOBAL STYLES & COLOR PALETTE
+   ========================================================================== */
+
+:root {
+  /* -- Main Theme Colors -- */
+  /* To change your theme, just edit the hex codes */
+  --color-bg-gradient-start: #ffead7; /* Sand */
+  --color-bg-gradient-end: #ff9160;   /* light sun */
+  --color-primary-dark: #435863;    /* Dark Slate Blue (for text and headers) */
+  --color-primary-light: #ffffff;   /* Pure White */
+  --color-text-primary: #333333;      /* Dark Gray (for main body text) */
+  --color-text-secondary: #555555;    /* Medium Gray (for labels) */
+  --color-text-light: #ecf0f1;      /* Light Gray (for text on dark backgrounds) */
+  --color-container-bg: rgba(255, 255, 255, 0.95); /* Semi-transparent white */
+
+  /* -- Accent & State Colors -- */
+  --color-accent-red: #e74c3c;        /* Bright Red (Subjective section, errors) */
+  --color-accent-red-dark: #c0392b;   /* Darker Red (for hover states) */
+  --color-accent-blue: #3498db;      /* Bright Blue (Objective section, buttons) */
+  --color-accent-blue-dark: #2980b9; /* Darker Blue (for hover states) */
+  --color-accent-orange: #f39c12;    /* Amber Orange (Assessment section) */
+  --color-accent-green: #27ae60;      /* Emerald Green (Plan section, success) */
+  --color-accent-green-dark: #229954; /* Darker Green (for hover states) */
+  
+  /* -- UI & Borders -- */
+  --color-border: #e1e8ed;          /* Light Gray (for input borders) */
+  --color-subsection-bg: #f8f9fa;   /* Very Light Gray (for subsection backgrounds) */
+  --color-shadow: rgba(0, 0, 0, 0.1); /* Soft black for shadows */
+  --color-modal-bg: #fefefe;         /* Modal background */
+  --color-modal-overlay: rgba(0,0,0,0.6); /* Modal overlay */
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -7,40 +40,33 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
-    color: #333;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: var(--color-text-primary); /* Dark Gray */
+    background: linear-gradient(180deg, var(--color-accent-red),var(--color-accent-blue),var(--color-accent-orange), var(--color-accent-green)); /* Red -> Yellow -> Blue -> Green */
     min-height: 100vh;
     padding: 20px;
 }
 
+/* ==========================================================================
+   2. MAIN LAYOUT (Container, Header, Content)
+   ========================================================================== */
+
 .container {
     max-width: 900px;
     margin: 0 auto;
-    background: rgba(255, 255, 255, 0.95);
+    background: var(--color-container-bg); /* Semi-transparent white */
     border-radius: 15px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 20px 40px var(--color-shadow); /* Soft black */
     backdrop-filter: blur(10px);
     overflow: hidden;
 }
 
 .header {
-    background: linear-gradient(135deg, #2c3e50, #34495e);
-    color: white;
+    background: linear-gradient(135deg, #6e737e, #34495e); /* Stays dark for contrast */
+    color: var(--color-primary-light); /* Pure White */
     padding: 30px;
     text-align: center;
     position: relative;
     overflow: hidden;
-}
-
-.header::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-    opacity: 0.3;
 }
 
 .header h1 {
@@ -69,7 +95,7 @@ body {
 
 .progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, #4CAF50, #45a049);
+    background: linear-gradient(90deg, var(--color-accent-green), var(--color-accent-green-dark)); /* Emerald Green -> Darker Green */
     border-radius: 3px;
     transition: width 0.5s ease;
     width: 0%;
@@ -79,9 +105,14 @@ body {
     padding: 40px;
 }
 
+
+/* ==========================================================================
+   3. SECTIONS & SUBSECTIONS (S.O.A.P Cards)
+   ========================================================================== */
+
 .section {
     margin-bottom: 40px;
-    background: white;
+    background: var(--color-primary-light); /* Pure White */
     border-radius: 12px;
     padding: 30px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
@@ -92,31 +123,25 @@ body {
     animation: slideIn 0.6s ease forwards;
 }
 
-.section.subjective { border-left-color: #e74c3c; }
-.section.objective { border-left-color: #3498db; }
-.section.assessment { border-left-color: #f39c12; }
-.section.plan { border-left-color: #27ae60; }
-
 .section:hover {
     transform: translateY(-2px);
     box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
 }
 
-@keyframes slideIn {
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
 .section h2 {
-    color: #2c3e50;
+    color: var(--color-primary-dark); /* Dark Slate Blue */
     font-size: 1.8em;
     margin-bottom: 20px;
     display: flex;
     align-items: center;
     gap: 10px;
 }
+
+/* -- Section Accent Colors -- */
+.section.subjective { border-left-color: var(--color-accent-red); } /* Bright Red */
+.section.objective { border-left-color: var(--color-accent-blue); } /* Bright Blue */
+.section.assessment { border-left-color: var(--color-accent-orange); } /* Amber Orange */
+.section.plan { border-left-color: var(--color-accent-green); } /* Emerald Green */
 
 .section-icon {
     width: 30px;
@@ -126,31 +151,36 @@ body {
     align-items: center;
     justify-content: center;
     font-weight: bold;
-    color: white;
+    color: var(--color-primary-light); /* Pure White */
     font-size: 1.2em;
 }
 
-.subjective .section-icon { background: #e74c3c; }
-.objective .section-icon { background: #3498db; }
-.assessment .section-icon { background: #f39c12; }
-.plan .section-icon { background: #27ae60; }
+.subjective .section-icon { background: var(--color-accent-red); } /* Bright Red */
+.objective .section-icon { background: var(--color-accent-blue); } /* Bright Blue */
+.assessment .section-icon { background: var(--color-accent-orange); } /* Amber Orange */
+.plan .section-icon { background: var(--color-accent-green); } /* Emerald Green */
 
 .subsection {
     margin-bottom: 25px;
     padding: 20px;
-    background: #f8f9fa;
+    background: var(--color-subsection-bg); /* Very Light Gray */
     border-radius: 8px;
-    border: 1px solid #e9ecef;
+    border: 1px solid var(--color-border); /* Light Gray */
 }
 
 .subsection h3 {
-    color: #34495e;
+    color: var(--color-primary-dark); /* Dark Slate Blue */
     margin-bottom: 15px;
     font-size: 1.2em;
     display: flex;
     align-items: center;
     gap: 8px;
 }
+
+
+/* ==========================================================================
+   4. FORM ELEMENTS (Inputs, Labels, Buttons)
+   ========================================================================== */
 
 .field-group {
     margin-bottom: 20px;
@@ -160,7 +190,7 @@ body {
     display: block;
     margin-bottom: 8px;
     font-weight: 600;
-    color: #555;
+    color: var(--color-text-secondary); /* Medium Gray */
     font-size: 0.95em;
 }
 
@@ -169,11 +199,11 @@ body {
 .field-group select {
     width: 100%;
     padding: 12px;
-    border: 2px solid #e1e8ed;
+    border: 2px solid var(--color-border); /* Light Gray */
     border-radius: 8px;
     font-size: 14px;
     transition: all 0.3s ease;
-    background: white;
+    background: var(--color-primary-light); /* Pure White */
 }
 
 .field-group select {
@@ -183,15 +213,15 @@ body {
     background-repeat: no-repeat;
     background-position: right 1rem center;
     background-size: 1em;
-    padding-right: 2.5rem; /* Make room for arrow */
+    padding-right: 2.5rem;
 }
 
 .field-group textarea:focus,
 .field-group input:focus,
 .field-group select:focus {
     outline: none;
-    border-color: #4CAF50;
-    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+    border-color: var(--color-accent-blue); /* Bright Blue */
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
     transform: scale(1.02);
 }
 
@@ -200,10 +230,15 @@ body {
     min-height: 80px;
 }
 
+
+/* ==========================================================================
+   5. VITALS SECTION SPECIFICS
+   ========================================================================== */
+
 .vitals-set {
     padding: 20px;
     margin-bottom: 20px;
-    border: 1px solid #e1e8ed;
+    border: 1px solid var(--color-border); /* Light Gray */
     border-radius: 8px;
     background: #fdfdfd;
     position: relative;
@@ -217,7 +252,7 @@ body {
 }
 
 .time-item {
-    grid-column: 1 / -1; /* Span full width of the grid */
+    grid-column: 1 / -1;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -232,15 +267,10 @@ body {
     font-weight: bold;
 }
 
-.time-item input {
-    flex-grow: 1;
-    background-color: #fff;
-}
-
 .set-time-btn {
     padding: 8px 12px;
-    background: #3498db;
-    color: white;
+    background: var(--color-accent-blue); /* Bright Blue */
+    color: var(--color-primary-light); /* Pure White */
     border: none;
     border-radius: 6px;
     cursor: pointer;
@@ -249,15 +279,15 @@ body {
 }
 
 .set-time-btn:hover {
-    background: #2980b9;
+    background: var(--color-accent-blue-dark); /* Darker Blue */
 }
 
 .remove-vitals-btn {
     position: absolute;
     top: 10px;
     right: 10px;
-    background: #e74c3c;
-    color: white;
+    background: var(--color-accent-red); /* Bright Red */
+    color: var(--color-primary-light); /* Pure White */
     border: none;
     border-radius: 50%;
     width: 28px;
@@ -271,14 +301,14 @@ body {
 }
 
 .remove-vitals-btn:hover {
-    background: #c0392b;
+    background: var(--color-accent-red-dark); /* Darker Red */
     transform: scale(1.1);
 }
 
 .vitals-status-group {
     display: flex;
-    flex-wrap: wrap; /* Allows items to wrap onto the next line */
-    gap: 10px 20px; /* Vertical and horizontal gap */
+    flex-wrap: wrap;
+    gap: 10px 20px;
     margin-top: 10px;
 }
 
@@ -289,7 +319,7 @@ body {
 }
 
 .vital-item {
-    background: white;
+    background: var(--color-primary-light); /* Pure White */
     padding: 15px;
     border-radius: 8px;
     border: 1px solid #dee2e6;
@@ -300,15 +330,14 @@ body {
     margin-bottom: 5px;
 }
 
-.vital-item input {
-    width: 100%;
-    padding: 8px;
-    margin: 0;
-}
+
+/* ==========================================================================
+   6. OUTPUT & ACTION BUTTONS
+   ========================================================================== */
 
 .generate-btn {
-    background: linear-gradient(135deg, #4CAF50, #45a049);
-    color: white;
+    background: linear-gradient(135deg, var(--color-accent-green), var(--color-accent-green-dark)); /* Emerald Green -> Darker Green */
+    color: var(--color-primary-light); /* Pure White */
     border: none;
     padding: 15px 30px;
     font-size: 16px;
@@ -318,17 +347,17 @@ body {
     transition: all 0.3s ease;
     width: 100%;
     margin-top: 30px;
-    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+    box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
 }
 
 .generate-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+    box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
 }
 
 .soap-output {
-    background: #2c3e50;
-    color: #ecf0f1;
+    background: var(--color-primary-dark); /* Dark Slate Blue */
+    color: var(--color-text-light); /* Light Gray */
     padding: 30px;
     border-radius: 12px;
     font-family: 'Courier New', monospace;
@@ -348,7 +377,7 @@ body {
 }
 
 .action-btn {
-    color: white;
+    color: var(--color-primary-light); /* Pure White */
     border: none;
     padding: 12px 24px;
     font-size: 15px;
@@ -365,14 +394,18 @@ body {
 }
 
 .copy-btn {
-    background: linear-gradient(135deg, #27ae60, #2ecc71);
+    background: linear-gradient(135deg, var(--color-accent-green), var(--color-accent-green-dark)); /* Emerald Green -> Darker Green */
 }
 
 .clear-btn {
-    background: linear-gradient(135deg, #c0392b, #e74c3c);
+    background: linear-gradient(135deg, var(--color-accent-red), var(--color-accent-red-dark)); /* Bright Red -> Darker Red */
 }
 
-/* Modal Styles */
+
+/* ==========================================================================
+   7. MODAL STYLES
+   ========================================================================== */
+
 .modal {
     display: none;
     position: fixed;
@@ -382,12 +415,12 @@ body {
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0,0,0,0.6);
+    background-color: var(--color-modal-overlay); /* Modal overlay */
     animation: fadeIn 0.3s;
 }
 
 .modal-content {
-    background-color: #fefefe;
+    background-color: var(--color-modal-bg); /* Modal background */
     margin: 15% auto;
     padding: 25px;
     border: 1px solid #888;
@@ -399,10 +432,7 @@ body {
     animation: slideDown 0.4s;
 }
 
-@keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
-@keyframes slideDown { from {transform: translateY(-50px);} to {transform: translateY(0);} }
-
-.modal-content h2 { margin-bottom: 15px; color: #333; }
+.modal-content h2 { margin-bottom: 15px; color: var(--color-text-primary); } /* Dark Gray */
 .modal-content p { margin-bottom: 25px; color: #666; }
 
 .modal-buttons {
@@ -420,14 +450,50 @@ body {
     transition: all 0.2s ease;
 }
 
-#confirmClearBtn { background-color: #e74c3c; color: white; }
-#confirmClearBtn:hover { background-color: #c0392b; }
+#confirmClearBtn { background-color: var(--color-accent-red); color: white; } /* Bright Red */
+#confirmClearBtn:hover { background-color: var(--color-accent-red-dark); } /* Darker Red */
 #cancelClearBtn { background-color: #bdc3c7; color: #333; }
 #cancelClearBtn:hover { background-color: #95a5a6; }
 
 .hidden {
     display: none;
 }
+
+
+/* ==========================================================================
+   8. INPUT VALIDATION FEEDBACK
+   ========================================================================== */
+
+.field-group input:invalid,
+.vital-item input:invalid {
+    border-color: var(--color-accent-red); /* Bright Red */
+    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.2);
+}
+
+.field-group input:valid:focus,
+.vital-item input:valid:focus {
+    border-color: var(--color-accent-green); /* Emerald Green */
+    box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.2);
+}
+
+
+/* ==========================================================================
+   9. ANIMATIONS & TRANSITIONS
+   ========================================================================== */
+
+@keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
+@keyframes slideDown { from {transform: translateY(-50px);} to {transform: translateY(0);} }
+@keyframes slideIn {
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+
+/* ==========================================================================
+   10. MEDIA QUERIES (Responsive Design)
+   ========================================================================== */
 
 @media (max-width: 768px) {
     .content {
@@ -442,19 +508,4 @@ body {
         grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     }
 }
-
-/* Add this to the end of your styles.css file */
-
-/* Style for invalid inputs */
-.field-group input:invalid,
-.vital-item input:invalid {
-    border-color: #e74c3c;
-    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.2);
-}
-
-/* Optional: Style for valid inputs on focus */
-.field-group input:valid:focus,
-.vital-item input:valid:focus {
-    border-color: #4CAF50;
-    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
 }
