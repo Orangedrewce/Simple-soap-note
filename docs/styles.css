@@ -4,7 +4,6 @@
 
 :root {
   /* -- Main Theme Colors -- */
-  /* To change your theme, just edit the hex codes */
   --color-bg-gradient-start: #ffead7; /* Sand */
   --color-bg-gradient-end: #ff9160;   /* light sun */
   --color-primary-dark: #435863;    /* Dark Slate Blue (for text and headers) */
@@ -17,12 +16,12 @@
   /* -- Accent & State Colors -- */
   --color-accent-red: #e74c3c;        /* Bright Red (Subjective section, errors) */
   --color-accent-red-dark: #c0392b;   /* Darker Red (for hover states) */
-  --color-accent-blue: #3498db;      /* Bright Blue (Objective section, buttons) */
+  --color-accent-blue: #3498db;       /* Bright Blue (Objective section, buttons) */
   --color-accent-blue-dark: #2980b9; /* Darker Blue (for hover states) */
-  --color-accent-orange: #f39c12;    /* Amber Orange (Assessment section) */
+  --color-accent-orange: #f39c12;     /* Amber Orange (Assessment section) */
   --color-accent-green: #27ae60;      /* Emerald Green (Plan section, success) */
   --color-accent-green-dark: #229954; /* Darker Green (for hover states) */
-  
+
   /* -- UI & Borders -- */
   --color-border: #e1e8ed;          /* Light Gray (for input borders) */
   --color-subsection-bg: #f8f9fa;   /* Very Light Gray (for subsection backgrounds) */
@@ -38,20 +37,26 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* Updated to modern system font stack for better native feel */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     line-height: 1.6;
     color: var(--color-text-primary);
-    background: linear-gradient(180deg, 
+    background-color: var(--color-primary-light);
+    background-image: linear-gradient(180deg,
         var(--color-primary-light) 0%,
-        var(--color-accent-red) 31.5%, 
-        var(--color-accent-blue) 35%, 
-        var(--color-accent-blue) 65%, 
-        var(--color-accent-orange) 70.5%, 
-        var(--color-accent-orange) 76.5%, 
-        var(--color-accent-green) 81%, 
-        var(--color-accent-green) 86%, 
+        var(--color-accent-red) 30%,
+        var(--color-primary-light) 33.25%,
+        var(--color-accent-blue) 35%,
+        var(--color-accent-blue) 67%,
+        var(--color-primary-light) 69.75%,
+        var(--color-accent-orange) 72.5%,
+        var(--color-accent-orange) 76.5%,
+        var(--color-primary-light) 79.75%,
+        var(--color-accent-green) 82%,
+        var(--color-accent-green) 86%,
         var(--color-primary-light) 100%
     );
+    background-repeat: no-repeat;
     min-height: 100vh;
     padding: 20px;
 }
@@ -76,16 +81,16 @@ body {
 .container {
     max-width: 900px;
     margin: 0 auto;
-    background: var(--color-container-bg); /* Semi-transparent white */
+    background: var(--color-container-bg);
     border-radius: 15px;
-    box-shadow: 0 20px 40px var(--color-shadow); /* Soft black */
+    box-shadow: 0 20px 40px var(--color-shadow);
     backdrop-filter: blur(10px);
     overflow: hidden;
 }
 
 .header {
-    background: linear-gradient(135deg, #6e737e, #34495e); /* Stays dark for contrast */
-    color: var(--color-primary-light); /* Pure White */
+    background: linear-gradient(135deg, #6e737e, #34495e);
+    color: var(--color-primary-light);
     padding: 30px;
     text-align: center;
     position: relative;
@@ -118,7 +123,7 @@ body {
 
 .progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--color-accent-green), var(--color-accent-green-dark)); /* Emerald Green -> Darker Green */
+    background: linear-gradient(90deg, var(--color-accent-green), var(--color-accent-green-dark));
     border-radius: 3px;
     transition: width 0.5s ease;
     width: 0%;
@@ -128,14 +133,13 @@ body {
     padding: 40px;
 }
 
-
 /* ==========================================================================
    3. SECTIONS & SUBSECTIONS (S.O.A.P Cards)
    ========================================================================== */
 
 .section {
     margin-bottom: 40px;
-    background: var(--color-primary-light); /* Pure White */
+    background: var(--color-primary-light);
     border-radius: 12px;
     padding: 30px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
@@ -152,7 +156,7 @@ body {
 }
 
 .section h2 {
-    color: var(--color-primary-dark); /* Dark Slate Blue */
+    color: var(--color-primary-dark);
     font-size: 1.8em;
     margin-bottom: 20px;
     display: flex;
@@ -161,10 +165,10 @@ body {
 }
 
 /* -- Section Accent Colors -- */
-.section.subjective { border-left-color: var(--color-accent-red); } /* Bright Red */
-.section.objective { border-left-color: var(--color-accent-blue); } /* Bright Blue */
-.section.assessment { border-left-color: var(--color-accent-orange); } /* Amber Orange */
-.section.plan { border-left-color: var(--color-accent-green); } /* Emerald Green */
+.section.subjective { border-left-color: var(--color-accent-red); }
+.section.objective { border-left-color: var(--color-accent-blue); }
+.section.assessment { border-left-color: var(--color-accent-orange); }
+.section.plan { border-left-color: var(--color-accent-green); }
 
 .section-icon {
     width: 30px;
@@ -174,32 +178,31 @@ body {
     align-items: center;
     justify-content: center;
     font-weight: bold;
-    color: var(--color-primary-light); /* Pure White */
+    color: var(--color-primary-light);
     font-size: 1.2em;
 }
 
-.subjective .section-icon { background: var(--color-accent-red); } /* Bright Red */
-.objective .section-icon { background: var(--color-accent-blue); } /* Bright Blue */
-.assessment .section-icon { background: var(--color-accent-orange); } /* Amber Orange */
-.plan .section-icon { background: var(--color-accent-green); } /* Emerald Green */
+.subjective .section-icon { background: var(--color-accent-red); }
+.objective .section-icon { background: var(--color-accent-blue); }
+.assessment .section-icon { background: var(--color-accent-orange); }
+.plan .section-icon { background: var(--color-accent-green); }
 
 .subsection {
     margin-bottom: 25px;
     padding: 20px;
-    background: var(--color-subsection-bg); /* Very Light Gray */
+    background: var(--color-subsection-bg);
     border-radius: 8px;
-    border: 1px solid var(--color-border); /* Light Gray */
+    border: 1px solid var(--color-border);
 }
 
 .subsection h3 {
-    color: var(--color-primary-dark); /* Dark Slate Blue */
+    color: var(--color-primary-dark);
     margin-bottom: 15px;
     font-size: 1.2em;
     display: flex;
     align-items: center;
     gap: 8px;
 }
-
 
 /* ==========================================================================
    4. FORM ELEMENTS (Inputs, Labels, Buttons)
@@ -213,7 +216,7 @@ body {
     display: block;
     margin-bottom: 8px;
     font-weight: 600;
-    color: var(--color-text-secondary); /* Medium Gray */
+    color: var(--color-text-secondary);
     font-size: 0.95em;
 }
 
@@ -223,11 +226,11 @@ body {
 .vital-item input {
     width: 100%;
     padding: 12px;
-    border: 2px solid var(--color-border); /* Light Gray */
+    border: 2px solid var(--color-border);
     border-radius: 8px;
     font-size: 14px;
     transition: all 0.3s ease;
-    background: var(--color-primary-light); /* Pure White */
+    background: var(--color-primary-light);
 }
 
 .field-group select {
@@ -245,7 +248,7 @@ body {
 .field-group select:focus,
 .vital-item input:focus {
     outline: none;
-    border-color: var(--color-accent-blue); /* Bright Blue */
+    border-color: var(--color-accent-blue);
     box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
     transform: scale(1.02);
 }
@@ -255,7 +258,6 @@ body {
     min-height: 80px;
 }
 
-
 /* ==========================================================================
    5. VITALS SECTION SPECIFICS
    ========================================================================== */
@@ -263,7 +265,7 @@ body {
 .vitals-set {
     padding: 20px;
     margin-bottom: 20px;
-    border: 1px solid var(--color-border); /* Light Gray */
+    border: 1px solid var(--color-border);
     border-radius: 8px;
     background: #fdfdfd;
     position: relative;
@@ -281,9 +283,8 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
-    background-color: transparent; /* Removed inconsistent background */
-    padding: 0; /* Removed inconsistent padding */
-    border: none; /* Removed inconsistent border */
+    padding: 0;
+    border: none;
 }
 
 .time-item label {
@@ -298,8 +299,8 @@ body {
 
 .set-time-btn {
     padding: 10px 15px;
-    background: var(--color-accent-blue); /* Bright Blue */
-    color: var(--color-primary-light); /* Pure White */
+    background: var(--color-accent-blue);
+    color: var(--color-primary-light);
     border: none;
     border-radius: 6px;
     cursor: pointer;
@@ -308,15 +309,15 @@ body {
 }
 
 .set-time-btn:hover {
-    background: var(--color-accent-blue-dark); /* Darker Blue */
+    background: var(--color-accent-blue-dark);
 }
 
 .remove-vitals-btn {
     position: absolute;
     top: 8px;
     right: 8px;
-    background: var(--color-accent-red); /* Bright Red */
-    color: var(--color-primary-light); /* Pure White */
+    background: var(--color-accent-red);
+    color: var(--color-primary-light);
     border: none;
     border-radius: 50%;
     width: 26px;
@@ -327,30 +328,16 @@ body {
     text-align: center;
     font-size: 1.1em;
     transition: all 0.2s ease;
-    z-index: 2; /* Ensures it's above other elements */
-    display: none; /* Hidden by default, shown by JS */
+    z-index: 2;
 }
 
 .remove-vitals-btn:hover {
-    background: var(--color-accent-red-dark); /* Darker Red */
+    background: var(--color-accent-red-dark);
     transform: scale(1.1);
 }
 
-.vitals-status-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px 20px;
-    margin-top: 10px;
-}
-
-.radio-label {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
 .vital-item {
-    background: var(--color-primary-light); /* Pure White */
+    background: var(--color-primary-light);
     padding: 15px;
     border-radius: 8px;
     border: 1px solid #dee2e6;
@@ -362,13 +349,74 @@ body {
 }
 
 
+/* --- Custom Radio Buttons for Vitals Status --- */
+.vitals-status-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin-top: 10px;
+}
+
+.radio-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--color-text-primary);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    transition: color 0.2s ease-in-out;
+}
+
+.radio-label:hover {
+    color: var(--color-accent-blue-dark);
+}
+
+.radio-label input[type="radio"] {
+    display: none;
+}
+
+.radio-label .custom-radio {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--color-text-secondary);
+    border-radius: 50%;
+    transition: border-color 0.2s ease-in-out;
+    position: relative;
+}
+
+.radio-label .custom-radio::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    width: 10px;
+    height: 10px;
+    background-color: var(--color-accent-blue);
+    border-radius: 50%;
+    transition: transform 0.2s ease-in-out;
+}
+
+.radio-label input[type="radio"]:checked + .custom-radio {
+    border-color: var(--color-accent-blue);
+}
+
+.radio-label input[type="radio"]:checked + .custom-radio::after {
+    transform: translate(-50%, -50%) scale(1);
+}
+
 /* ==========================================================================
    6. OUTPUT & ACTION BUTTONS
    ========================================================================== */
 
 .generate-btn {
-    background: linear-gradient(135deg, var(--color-accent-green), var(--color-accent-green-dark)); /* Emerald Green -> Darker Green */
-    color: var(--color-primary-light); /* Pure White */
+    background: linear-gradient(135deg, var(--color-accent-green), var(--color-accent-green-dark));
+    color: var(--color-primary-light);
     border: none;
     padding: 15px 30px;
     font-size: 16px;
@@ -387,8 +435,8 @@ body {
 }
 
 .soap-output {
-    background: var(--color-primary-dark); /* Dark Slate Blue */
-    color: var(--color-text-light); /* Light Gray */
+    background: var(--color-primary-dark);
+    color: var(--color-text-light);
     padding: 30px;
     border-radius: 12px;
     font-family: 'Courier New', monospace;
@@ -408,7 +456,7 @@ body {
 }
 
 .action-btn {
-    color: var(--color-primary-light); /* Pure White */
+    color: var(--color-primary-light);
     border: none;
     padding: 12px 24px;
     font-size: 15px;
@@ -425,13 +473,12 @@ body {
 }
 
 .copy-btn {
-    background: linear-gradient(135deg, var(--color-accent-green), var(--color-accent-green-dark)); /* Emerald Green -> Darker Green */
+    background: linear-gradient(135deg, var(--color-accent-green), var(--color-accent-green-dark));
 }
 
 .clear-btn {
-    background: linear-gradient(135deg, var(--color-accent-red), var(--color-accent-red-dark)); /* Bright Red -> Darker Red */
+    background: linear-gradient(135deg, var(--color-accent-red), var(--color-accent-red-dark));
 }
-
 
 /* ==========================================================================
    7. MODAL STYLES
@@ -446,12 +493,12 @@ body {
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: var(--color-modal-overlay); /* Modal overlay */
+    background-color: var(--color-modal-overlay);
     animation: fadeIn 0.3s;
 }
 
 .modal-content {
-    background-color: var(--color-modal-bg); /* Modal background */
+    background-color: var(--color-modal-bg);
     margin: 15% auto;
     padding: 25px;
     border: 1px solid #888;
@@ -463,7 +510,7 @@ body {
     animation: slideDown 0.4s;
 }
 
-.modal-content h2 { margin-bottom: 15px; color: var(--color-text-primary); } /* Dark Gray */
+.modal-content h2 { margin-bottom: 15px; color: var(--color-text-primary); }
 .modal-content p { margin-bottom: 25px; color: #666; }
 
 .modal-buttons {
@@ -481,8 +528,8 @@ body {
     transition: all 0.2s ease;
 }
 
-#confirmClearBtn { background-color: var(--color-accent-red); color: white; } /* Bright Red */
-#confirmClearBtn:hover { background-color: var(--color-accent-red-dark); } /* Darker Red */
+#confirmClearBtn { background-color: var(--color-accent-red); color: white; }
+#confirmClearBtn:hover { background-color: var(--color-accent-red-dark); }
 #cancelClearBtn { background-color: #bdc3c7; color: #333; }
 #cancelClearBtn:hover { background-color: #95a5a6; }
 
@@ -490,18 +537,17 @@ body {
     display: none;
 }
 
-
 /* ==========================================================================
    8. INPUT VALIDATION FEEDBACK
    ========================================================================== */
 
 input:invalid:not(:placeholder-shown) {
-    border-color: var(--color-accent-red); /* Bright Red */
+    border-color: var(--color-accent-red);
     box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.2);
 }
 
 input:valid:not(:placeholder-shown) {
-    border-color: var(--color-accent-green); /* Emerald Green */
+    border-color: var(--color-accent-green);
     box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.2);
 }
 
@@ -523,7 +569,6 @@ input:focus:invalid {
     }
 }
 
-
 /* ==========================================================================
    10. MEDIA QUERIES (Responsive Design)
    ========================================================================== */
@@ -532,11 +577,11 @@ input:focus:invalid {
     .content {
         padding: 20px;
     }
-    
+
     .header h1 {
         font-size: 2em;
     }
-    
+
     .vitals-grid {
         grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     }
@@ -544,7 +589,6 @@ input:focus:invalid {
 
 @media (max-width: 480px) {
     .vitals-grid {
-        /* Stack all items in a single column on small screens */
         grid-template-columns: 1fr;
     }
     .time-item {
