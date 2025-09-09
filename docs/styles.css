@@ -43,7 +43,6 @@
   --color-bg-gradient-end: #ff9160;     /* Light Sun */
   --color-primary-dark: #435863;      /* Dark Slate Blue (for text and headers) */
   --color-primary-light: #ffffff;      /* Pure White */
-  --color-container-bg: rgba(255, 255, 255, 0.95); /* Semi-transparent white */
 
   /* -- Text Colors -- */
   --color-text-primary: #333333;       /* Dark Gray (for main body text) */
