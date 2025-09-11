@@ -46,14 +46,14 @@ body {
         var(--color-primary-light) 0%,
         var(--color-accent-red) 30%,
         var(--color-primary-light) 33.25%,
-        var(--color-accent-blue) 35%,
-        var(--color-accent-blue) 67%,
+        var(--color-accent-orange) 35%,
+        var(--color-accent-orange) 67%,
         var(--color-primary-light) 69.75%,
-        var(--color-accent-orange) 72.5%,
-        var(--color-accent-orange) 76.5%,
+        var(--color-accent-green) 72.5%,
+        var(--color-accent-green) 76.5%,
         var(--color-primary-light) 79.75%,
-        var(--color-accent-green) 82%,
-        var(--color-accent-green) 86%,
+        var(--color-accent-blue) 82%,
+        var(--color-accent-blue) 86%,
         var(--color-primary-light) 100%
     );
     background-repeat: no-repeat;
@@ -166,9 +166,9 @@ body {
 
 /* -- Section Accent Colors -- */
 .section.subjective { border-left-color: var(--color-accent-red); }
-.section.objective { border-left-color: var(--color-accent-blue); }
-.section.assessment { border-left-color: var(--color-accent-orange); }
-.section.plan { border-left-color: var(--color-accent-green); }
+.section.objective { border-left-color: var(--color-accent-orange); }
+.section.assessment { border-left-color: var(--color-accent-green); }
+.section.plan { border-left-color: var(--color-accent-blue); }
 
 .section-icon {
     width: 30px;
